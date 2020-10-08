@@ -23,8 +23,29 @@ async function handle(event) {
 
     var beard = data.analysis[0].faceAttributes.facialHair;
 
+    var emotion = data.analysis[0].faceAttributes.emotion;
+
+    var valence = emotion.happiness + emotion.surprise - emotion.anger - emotion.contempt - emotion.disgust - emotion.fear - emotion.sadness;
+
+    if (valence < emotion.neutral) {
+        valence = 0.5;
+        
+    } 
+    
+    if (valence > 1) {
+        valence = 1;
+        
+    }
+
+    if (valence < 0) {
+        valence = 0;
+    }
+
     var resultString = `
     
+    <h3> Emotions in the image: </h3> <br />
+    <p> anger: ${emotion.anger}</p>
+    <p> happiness: ${emotion.happiness}</p>
     <h3>Facial Hair in Image</h3>
     <p> Beard: ${beard.beard}</p>
     <p> Mustache: ${beard.mustache}</p>
